@@ -14,6 +14,8 @@ import com.ctrip.framework.dal.cluster.client.sharding.strategy.ShardStrategy;
 import com.ctrip.framework.dal.cluster.client.sharding.strategy.UserHintStrategy;
 import com.ctrip.framework.dal.cluster.client.util.SPIUtils;
 import com.ctrip.framework.dal.cluster.client.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -34,6 +36,8 @@ import java.util.List;
 public class ClusterConfigXMLParser implements ClusterConfigParser, ClusterConfigValidator, ClusterConfigXMLConstants {
 
     private volatile IdGeneratorConfigXMLParser idGeneratorConfigXMLParser;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClusterConfigXMLParser.class);
+    private static final String  ERROR_PARSE_CUSTOM_STRATEGY = "Make sure you have defined '%s' in your project;If unnecessary, ignore it; otherwise, fix it immediately!";
 
     @Override
     public ClusterConfig parse(String content) {
@@ -178,7 +182,8 @@ public class ClusterConfigXMLParser implements ClusterConfigParser, ClusterConfi
             ShardStrategy strategy = (ShardStrategy) Class.forName(className).newInstance();
             parseShardStrategy(clusterConfig, strategyNode, strategy);
         } catch (Throwable t) {
-            throw new ClusterRuntimeException("invalid custom strategy impl class", t);
+            LOGGER.warn(String.format(ERROR_PARSE_CUSTOM_STRATEGY, className), t);
+//            throw new ClusterRuntimeException("invalid custom strategy impl class", t);
         }
     }
 
