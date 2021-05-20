@@ -9,6 +9,7 @@ import java.util.Properties;
 public class DalDefaultStatementInterceptorV2 implements StatementInterceptorV2 {
 
 
+//    suppose that i have add some new actions to ctrip-dal; this is the first commit
     @Override
     public void init(Connection conn, Properties props) throws SQLException {
     }
