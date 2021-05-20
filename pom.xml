@@ -13,6 +13,9 @@
     <version>2.3.2</version>
     <packaging>pom</packaging>
 
+
+<!--    that i need to update version-->
+
     <modules>
         <module>dal-cluster-client</module>
         <module>dal-client</module>
